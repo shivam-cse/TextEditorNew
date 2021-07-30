@@ -115,10 +115,9 @@ createTable.addEventListener('click', function () {
 })
 
 
-
-///save data button
-document.getElementById('saveData').addEventListener('click', ()=>{
-    var frameObj =  document.getElementById('textField');
+//This code useful when you want like that user types somthing inside text area  at a same time you want to diplay to other div. 
+frameObj =  document.getElementById('textField');
+frameObj.contentWindow.document.addEventListener('input', ()=>{
     var frameContent = frameObj.contentWindow.document.body.innerHTML;
     console.log(frameContent);
 
@@ -126,3 +125,16 @@ document.getElementById('saveData').addEventListener('click', ()=>{
     document.getElementById('addSaveData').innerHTML = html;
 
 })
+
+
+//This code useful when you want to diplay data of text when user click on save button. for this you need just remove below code from comment and see the effect , at a same time you also need to comment out above code (line number - 120 to 128). 
+
+// document.getElementById('saveData').addEventListener('click', ()=>{
+//      frameObj =  document.getElementById('textField');
+//     var frameContent = frameObj.contentWindow.document.body.innerHTML;
+//     console.log(frameContent);
+
+//     let html = `<div> ${frameContent} </div>`
+//     document.getElementById('addSaveData').innerHTML = html;
+
+// })
