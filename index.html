@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- this link to use version 4.7.0 for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <!-- This link to use version 5.10.0 for icons -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
+
+    <title>My Own Editor</title>
+</head>
+
+<body onload="makeEditableMode();">
+<!-- <body > -->
+
+    <div class="container my-5 py-4 px-5">
+        <div>
+            <button type="button" onclick="getIframeContent();">
+                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('undo')">
+                <i class="fa fa-undo" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('redo')">
+                <i class="fa fa-repeat" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('bold')">
+                <i class="fa fa-bold" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('italic')">
+                <i class="fa fa-italic" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('underline')">
+                <i class="fa fa-underline" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('strikeThrough')">
+                <i class="fa fa-strikethrough" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('removeFormat')">
+                <i class="fas fa-remove-format"></i>
+            </button>
+            <button type="button" onclick="execCmd('justifyLeft')">
+                <i class="fa fa-align-left" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('justifyCenter')">
+                <i class="fa fa-align-center" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('justifyFull')">
+                <i class="fa fa-align-justify" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('justifyRight')">
+                <i class="fa fa-align-right" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('insertOrderedList')">
+                <i class="fa fa-list-ol" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('insertUnorderedList')">
+                <i class="fa fa-list-ul" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('indent')">
+                <i class="fa fa-indent" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('outdent')">
+                <i class="fa fa-dedent" aria-hidden="true"></i>
+            </button>
+
+            <button type="button" onclick="execCmd('insertParagraph')">
+                <i class="fa fa-paragraph" aria-hidden="true"></i>
+            </button>
+
+            <button type="button" onclick="execCmdWithArg('createLink', prompt('Enter Your URL', 'http://'))">
+                <i class="fa fa-link" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('unlink')">
+                <i class="fa fa-unlink" aria-hidden="true"></i>
+            </button>
+
+            <input type="file" name="" id="image"
+                onchange="execCmdForImageUpload(event,prompt('Enter image size in px'))" hidden>
+            <button type="button" onclick="uploadImage()">
+                <i class="fa fa-file-image-o" aria-hidden="true"></i>
+            </button>
+
+
+            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="fa fa-table" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="toggleSourceCode()">
+                <i class="fa fa-code" aria-hidden="true"></i>
+            </button>
+            <button type="button" onclick="execCmd('insertHorizontalRule')">
+                <i class="fa" aria-hidden="true">HR</i>
+            </button>
+
+            <select name="" id="" onchange="execCmdWithArg('formatBlock', this.value);">
+                <option value="normal">Heading</option>
+                <option value="H1">H1</option>
+                <option value="H2">H2</option>
+                <option value="H3">H3</option>
+                <option value="H4">H4</option>
+                <option value="H5">H5</option>
+                <option value="H6">H6</option>
+            </select>
+
+            <select name="" id="" onchange="execCmdWithArg('fontName', this.value);">
+                <option value="">Font</option>
+                <option value="Arial">Arial</option>
+                <option value="Comic Sans MS">Comic Sans MS</option>
+                <option value="Courier">Courier</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Times New Roman">Times New Roman</option>
+            </select>
+            <select name="" id="" onchange="execCmdWithArg('fontSize', this.value);">
+                <option value="normal">Size</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </select>
+
+            <label for="textColor">Text Color: </label>
+            <input type="color" id="textColor" onchange="execCmdWithArg('foreColor', this.value);">
+            </input>
+            <label for="textBacColor">Text Background: </label>
+            <input type="color" id="textBacColor" onchange="execCmdWithArg('hiliteColor', this.value);">
+            </input>
+
+            <input class="form-control form-control-sm" id="fileUpload" type="file" style="width: 21%; margin-top: 5px;" onchange="execCmdForFileUpload(event)"> 
+        </div>
+        <div>
+            <iframe src="" name="textField" id="textField" frameborder="0" style="padding: 20px; height: 400px;"> </iframe>
+
+        </div>
+        <button type="button" class="btn btn-primary" id="saveData">Save Data</button>
+        <div id="addSaveData"></div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Table properties</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="getRow" class="form-label">Rows: </label>
+                                <input type="number" class="form-control" id="getRow" value="1">
+                                <div class="mb-3">
+                                    <label for="getColumns" class="form-label">Columns: </label>
+                                    <input type="number" class="form-control" id="getColumns" value="1">
+                                </div>
+                                <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="createTable">Ok</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="./script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+</body>
+
+</html>
