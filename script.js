@@ -13,6 +13,7 @@ function execCmd(cmd) {
 
 
 function execCmdWithArg(cmd, arg) {
+    console.log("Check list")
     textField.document.execCommand(cmd, false, arg);
 }
 
@@ -33,21 +34,21 @@ function toggleSourceCode() {
 
 
 function execCmdForImageUpload(event, imageSize) {
-    
+
     let image = document.getElementById('image');
-    let  imageName = image.value;
+    let imageName = image.value;
     let extentionDot = imageName.lastIndexOf(".") + 1;
     let extentionName = imageName.substr(extentionDot, image.length).toLowerCase();
 
     const ext = ["jpg", "png", "jpeg"] //We can add more image formate in the array.
-     if(ext.indexOf(extentionName) != -1){
-         path = URL.createObjectURL(event.target.files[0]);
-         let html = `<img class="myImg" src="${path}" style="width: ${imageSize}px;">`
-         let cmd = 'insertHTML';
-         textField.document.execCommand(cmd, false, html);
-     }
-     else
-     alert("Please select image formate only !");
+    if (ext.indexOf(extentionName) != -1) {
+        path = URL.createObjectURL(event.target.files[0]);
+        let html = `<img class="myImg" src="${path}" style="width: ${imageSize}px;">`
+        let cmd = 'insertHTML';
+        textField.document.execCommand(cmd, false, html);
+    }
+    else
+        alert("Please select image formate only !");
 }
 
 
@@ -58,16 +59,16 @@ function uploadImage() {
 
 
 // upload the file 
-function execCmdForFileUpload(event){
+function execCmdForFileUpload(event) {
     let fileName = document.getElementById('fileUpload').value;
-    fileName = fileName.substring(fileName.lastIndexOf('\\')+1);
+    fileName = fileName.substring(fileName.lastIndexOf('\\') + 1);
     console.log(event.target.files[0]);
-    
+
     let path = URL.createObjectURL(event.target.files[0]);
     console.log(path);
 
     let html = `<embed src="${path}" type="application/pdf" width="100%" height="600px"></embed>`
-  
+
     console.log("hello")
     console.log(html);
     // var html = `<a id = "fileUpload2" href="${path}">${fileName}</a>`;
@@ -77,7 +78,7 @@ function execCmdForFileUpload(event){
 }
 
 function getIframeContent() {
-    var frameObj =  document.getElementById('textField');
+    var frameObj = document.getElementById('textField');
     var frameContent = frameObj.contentWindow.document.body.innerHTML;
     let doc = new jsPDF();
     html2pdf().from(frameContent).save();
@@ -110,20 +111,17 @@ createTable.addEventListener('click', function () {
 
     inside = html + inside + `</table>`;
     textField.document.execCommand("insertHTML", false, inside);
-    // console.log("Finally : " + textField);
+
 
 })
 
 
 //This code useful when you want like that user types somthing inside text area  at a same time you want to diplay to other div. 
-frameObj =  document.getElementById('textField');
-frameObj.contentWindow.document.addEventListener('input', ()=>{
+frameObj = document.getElementById('textField');
+frameObj.contentWindow.document.addEventListener('input', () => {
     var frameContent = frameObj.contentWindow.document.body.innerHTML;
-    console.log(frameContent);
-
     let html = `<div> ${frameContent} </div>`
     document.getElementById('addSaveData').innerHTML = html;
-
 })
 
 
@@ -138,3 +136,12 @@ frameObj.contentWindow.document.addEventListener('input', ()=>{
 //     document.getElementById('addSaveData').innerHTML = html;
 
 // })
+
+let count = 0;
+function execCmdForCheckList(msg){
+    count++;
+    let html = ` <input type="checkbox" id="tasks${count}" name="tasks" value="Bike"><label for="tasks${count}">${msg}</label><br>`
+    
+    textField.document.execCommand('insertHTML', false, html);
+}
+

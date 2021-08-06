@@ -69,6 +69,12 @@
             <button type="button" onclick="execCmd('insertUnorderedList')">
                 <i class="fa fa-list-ul" aria-hidden="true"></i>
             </button>
+            <button type="button" onclick="execCmdForCheckList(prompt('Write text...'), '')">
+                
+                <i class="fas fa-tasks" aria-hidden="true"></i>
+            </button>
+
+
             <button type="button" onclick="execCmd('indent')">
                 <i class="fa fa-indent" aria-hidden="true"></i>
             </button>
@@ -169,7 +175,6 @@
                                     <label for="getColumns" class="form-label">Columns: </label>
                                     <input type="number" class="form-control" id="getColumns" value="1">
                                 </div>
-                                <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -179,8 +184,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
     <script src="./script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
